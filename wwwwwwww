@@ -1,0 +1,38 @@
+function()
+local remote =  game:GetService("ReplicatedStorage").DeleteCar
+local Tool = Instance.new("Tool",game.Players.LocalPlayer.Backpack)
+local Equipped = false
+
+Tool.RequiresHandle = false
+Tool.TextureId = 'http://roblox.com/asset/?id=12223874'
+local Field = Instance.new("SelectionBox",game.Workspace)
+local Mouse = game.Players.LocalPlayer:GetMouse()
+Field.LineThickness = 0.1
+
+Tool.Equipped:connect(function()
+    Equipped = true
+    Mouse.Icon = 'rbxasset://textures/HammerCursor.png'
+    while Equipped == true do
+        if Mouse.Target ~= nil then
+            Field.Adornee = Mouse.Target
+        else
+            Field.Adornee = nil
+        end
+        wait()
+    end
+end)
+
+
+Tool.Unequipped:connect(function()
+    Equipped = false
+    Field.Adornee = nil
+    Mouse.Icon = ''
+end)
+
+Tool.Activated:connect(function()
+    if Mouse.Target ~= nil then
+        local ob = Mouse.Target
+        remote:FireServer(ob)
+    end
+end)
+end)
